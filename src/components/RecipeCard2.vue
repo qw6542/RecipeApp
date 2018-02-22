@@ -13,14 +13,12 @@
     <a class="img" href="#"> </a>
     <div class="info">
      <h2>{{card.title}}</h2>
-      <!--<progress value="{{card.favorate}}" max="5">rating</progress>-->
       <input type="checkbox" id="checkbox" v-model=card.checked>
-      <label for="checkbox">Favorate</label>
-      <star-rating v-bind:star-size=10 v-model=card.rating> </star-rating>
-      <div>By -- {{card.user}} </div>
-      <social-sharing class="size "></social-sharing>
+      <label for="checkbox">Favorite</label>
+      <div class="username">By {{card.user}} </div>
+      <star-rating v-bind:star-size=10 v-model=card.rating class="star"> </star-rating>
+      <social-sharing></social-sharing>
     </div>
-    <br/>
   </div>
 
 </template>
@@ -46,7 +44,6 @@ export default {
   #recipe-card-container{
     width:100%;
   }
-
   .img{
     background-image: url("../assets/img/images.jpg");
     background-position: center;
@@ -63,8 +60,10 @@ export default {
     height: 11rem;
     float: right;
   }
-  .size{
-    /*background-color: white;*/
-    float: right;
+  .star{
+    float: left;
   }
+  /*.username{*/
+    /*padding-right: 40%;*/
+  /*}*/
 </style>

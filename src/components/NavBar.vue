@@ -2,16 +2,56 @@
   <div id="nav-bar">
     <nav>
       <div id="nav-container">
-        <a href="#">Sign in</a><!-- Do not remove
-        --><a href="#">Sign up</a>
+        <a v-if="!is_login" href="#">Sign in</a>
+        <a v-if="!is_login" href="#">Sign up</a>
+        <a v-if="is_login" href="#">Log Out</a>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
+import sa from 'superagent'
 export default {
-  name: 'nav-bar'
+  name: 'nav-bar',
+  data () {
+    return {
+      is_login: false
+    }
+  },
+  methods: {
+    loading: function () {
+      sa.get('http://www.mocky.io/v2/5a8b0ac93200002c001abdaa')
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          // Calling the end function will send the request
+          if (err) {
+            alert(err)
+          } else {
+            this.is_login = res.body.is_login
+          }
+        })
+    }
+    /*
+ postman () {
+       sa.get('https://fc8e2db2-301a-4a7b-8d6b-32cd9288667d.mock.pstmn.io/auth/status')
+         .set('x-api-key', '0a332273c19440eaa8022891e69dc18c')
+         .set('Accept', 'application/json')
+         .end((err, res) => {
+           // Calling the end function will send the request
+           if (err) {
+             alert(err)
+           } else {
+             let data = JSON.parse(res.text)
+           }
+         })
+     }
+*/
+  },
+  mounted () {
+    this.loading()
+  }
+
 }
 </script>
 

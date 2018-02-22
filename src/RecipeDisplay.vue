@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
-  <div class="centre container">
+  <div>
+    <div>
     <img v-bind:src="recipe.image" class="image" />
 
-    <div class="recipe-header">
     <form action="">
       <h1>{{recipe.title}}</h1>
       <label for="checkbox" >Favorate</label>
@@ -11,15 +11,15 @@
       <p class="">By {{recipe.name}}</p>
       <star-rating v-bind:star-size=15 v-model=recipe.rating class=""> </star-rating>
     </form>
-
     </div>
+
     <ul>
      <h2>Ingredients:</h2>
-    <li v-for="i in recipe.ingredients" :key="recipe.id">{{i}}</li>
+    <li v-for="i in recipe.ingredients" :key="i.id">{{i}}</li>
     </ul>
     <ol>
      <h2>Methods</h2>
-      <li v-for="i in recipe.description" :key="recipe.id">{{i}}</li>
+      <li v-for="i in recipe.description" :key="i.id">{{i}}</li>
     </ol>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       recipe: [],
-      checked: false,
+      checked: false
     }
   },
   components: {
@@ -58,26 +58,11 @@ export default {
 }
 </script>
 <style scoped>
-  .centre {
-  padding-left: 20%;
-  }
-  .recipe-header{
-    text-align: center;
-    width: 60%;
-    background-color: #80deea;
-    outline-color: rgba(255, 255, 255, 0.7);
-    border-radius: 1.5rem;
-    color: white;
-    margin-top: 1.5rem;
-  }
   .image{
     width: 60%;
     border-radius: 1.5rem;
-    /*height: auto;*/
+    height: 30rem;
   }
-  /*.float-right{*/
-    /*float: right;*/
-  /*}*/
 
 </style>
 
