@@ -12,24 +12,27 @@
     <hr/>
     <table>
       <tr>
-        <th>Quanlity</th>
+        <th>Quantity</th>
         <th>Measurement</th>
         <th>Ingredient</th>
         <th> </th>
       </tr>
       <tr>
         <td>
-          <input type="number" id="quanlity" v-model="amount" min="0" max="99" ></td>
+          <input type="number" id="quantity" v-model="ingredient_item.quantity" min="0" max="99" ></td>
         <td>
-          <input type="text" id="" v-model="measurement" placeholder="e.g. teaspoon"></td>
-        <td><input type="text" id="ingredient" v-model="ingre_item" placeholder="e.g. egg"></td>
+          <input type="text" id="" v-model="ingredient_item.measurement" placeholder="e.g. teaspoon"></td>
+        <td><input type="text" id="ingredient" v-model="ingredient_item.ingredient" placeholder="e.g. egg"></td>
         <td><button id="btn-addIngredients" v-on:click="addIngredient">Add This</button></td>
       </tr>
+      <tr  v-for="i in ingredients" :key="i.id">
+        <td>{{i.quantity}}</td>
+        <td>{{i.measurement}}</td>
+        <td>{{i.ingredient}}</td>
+        <td><a href="#" v-on:click.prevent.stop="deleteIngredient(i)">X</a></td>
+      </tr>
     </table>
-     <ul>
-        <li v-for="i in ingredients" :key="i.id">{{i}} <a href="#" v-on:click.prevent.stop="deleteIngredient(i)">X</a></li>
-      </ul>
-     <hr/>
+    <hr/>
     <table class="description-table">
       <tr><th>Description</th></tr>
       <tr>
@@ -51,12 +54,14 @@
 import FileUploader from '../components-user/FileUploader'
 export default {
   name: 'upload-recipe',
-  data () {
+  data: function () {
     return {
       title: '',
-      ingre_item: '',
-      quanlity: 0,
-      measurement: '',
+      ingredient_item: {
+        quantity: null,
+        measurement: '',
+        ingredient: ''
+      },
       des_item: '',
       ingredients: [],
       description: []
@@ -67,9 +72,9 @@ export default {
   },
   methods: {
     addIngredient () {
-      if (this.checkEmpty(this.ingre_item)) {
-        this.ingredients.push(this.ingre_item)
-        this.ingre_item = ''
+      if (this.checkEmpty(this.ingredient_item.ingredient)) {
+        this.ingredients.push(this.ingredient_item)
+        this.ingredient_item = {ingredient: ''}
       }
     },
     addDescription () {
@@ -129,17 +134,16 @@ export default {
   }
   table{
     text-align: center;
-    margin-left: 20%;
+    width: 100%
   }
   #description{
     width: 100%;
     height: 5rem;
     padding: 1rem;
-    border-radius:1.5rem;
+    border-radius:1.5rem;d
   }
   .description-table {
-    margin-left: 30%;
-    width: 60%;
+    width: 100%;
   }
   .description-table button{
     margin: 1rem;
