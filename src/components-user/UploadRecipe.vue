@@ -140,7 +140,7 @@ export default {
     width: 100%;
     height: 5rem;
     padding: 1rem;
-    border-radius:1.5rem;d
+    border-radius:1.5rem;
   }
   .description-table {
     width: 100%;
