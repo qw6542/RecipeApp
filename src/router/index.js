@@ -4,6 +4,7 @@ import UserProfile from '../UserProfile'
 import HomePage from '../HomePage'
 import RecipeDisplay from '../RecipeDisplay'
 import UploadRecipe from '../components-user/UploadRecipe'
+
 import test from '../test.vue'
 
 Vue.use(Router)

@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <picture-input
       ref="pictureInput"
       @change="onChange"
