@@ -2,25 +2,35 @@
 <template>
   <div>
     <div>
-    <img v-bind:src="recipe.image" class="image" />
+    <!--<img v-bind:src="recipe.image" class="image" />-->
 
-    <form action="">
+    <form action="" class="info">
       <h1>{{recipe.title}}</h1>
       <label for="checkbox" >Favorate</label>
       <input type="checkbox" id="checkbox" v-model=checked>
-      <p class="">By {{recipe.name}}</p>
+      <p class="">{{recipe.name}}</p>
       <star-rating v-bind:star-size=15 v-model=recipe.rating class=""> </star-rating>
     </form>
     </div>
 
-    <ul>
-     <h2>Ingredients:</h2>
-    <li v-for="i in recipe.ingredients" :key="i.id">{{i}}</li>
-    </ul>
-    <ol>
+    <table class="ingredient">
+      <tr>
+        <th>Quantity</th>
+        <th>Measurement</th>
+        <th>Ingredient</th>
+      </tr>
+      <tr  v-for="i in recipe.ingredients" :key="i.id">
+        <td>{{i.quantity}}</td>
+        <td>{{i.measurement}}</td>
+        <td>{{i}}</td>
+      </tr>
+    </table>
+    <ol class="method">
      <h2>Methods</h2>
-      <li v-for="i in recipe.description" :key="i.id">{{i}}</li>
+      <li v-for="i in recipe.descriptions" :key="i.id">{{i}}</li>
     </ol>
+    <hr>
+    <div><p> section fo comment </p></div>
   </div>
 </template>
 
@@ -40,14 +50,15 @@ export default {
   },
   methods: {
     loadingRecipe () {
-      sa.get('http://www.mocky.io/v2/5a88bad03000006c007f94bd')
+      // sa.get('http://www.mocky.io/v2/5a88bad03000006c007f94bd')
+      sa.get('http://localhost/api/recipes/get')
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request
           if (err) {
-            alert(err)
+            console.log(err)
           } else {
-            this.recipe = res.body.Recipe
+            this.recipe = JSON.parse(res.text).recipe
           }
         })
     }
@@ -62,6 +73,29 @@ export default {
     width: 60%;
     border-radius: 1.5rem;
     height: 30rem;
+  }
+  .info{
+    background-color: #76ff03;
+    width: 60%;
+    margin-left:20%;
+    border-radius: 1.5rem;
+
+  }
+  .ingredient{
+    width: 60%;
+    margin-left:20%;
+    margin-top: 1rem;
+    background-color: #00b0ff;
+    border-radius: 1.5rem;
+
+  }
+  .method{
+    width:  57%;
+    margin-top: 1rem;
+    background-color: #00b0ff;
+    border-radius: 1.5rem;
+    margin-left:20%;
+
   }
 
 </style>

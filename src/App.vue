@@ -34,7 +34,7 @@ export default {
     bottom: 0;
   }
   body {
-    background-image: url('./assets/img/fantasy-3000308_1920.jpg');
+    background-image: url('./assets/img/3.jpg');
     background-attachment: fixed;
     background-position: center;
     background-size: cover;

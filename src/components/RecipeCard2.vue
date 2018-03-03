@@ -10,7 +10,7 @@
     col-lg-6
     col-lg-offset-3
   ">
-    <a class="img" href="#"> </a>
+    <img  v-bind:src=card.image class="img" href="#">
     <div class="info">
      <h2>{{card.title}}</h2>
       <input type="checkbox" id="checkbox" v-model=card.checked>
@@ -45,7 +45,6 @@ export default {
     width:100%;
   }
   .img{
-    background-image: url("../assets/img/images.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

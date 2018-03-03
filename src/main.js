@@ -3,15 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+Vue.use(Vuetify)
 Vue.config.productionTip = false
-
-// var SocialSharing = require('vue-social-sharing')
-// Vue.use(SocialSharing)
-/* eslint-disable no-new */
-
-// let SocialSharing = require('vue-social-sharing')
-// Vue.use(SocialSharing)
-
 new Vue({
   el: '#app',
   router,

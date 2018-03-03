@@ -6,7 +6,7 @@
     <button v-on:click="clickHot">Hot</button>
     <button v-on:click="clickNew" >New</button>
     <button>Recent</button> <br/> <br/>
-      <recipe-card v-for="d in cardData" v-bind:card="d" :key="d.title" class="card"> </recipe-card>
+      <recipe-card v-for="d in cardData" v-bind:card="d" :key="d.id" class="card"> </recipe-card>
   </div>
     <v-paginator :options="options" :resource_url="resource_url2" ref="vpaginator" @update="updateResource"></v-paginator>
   </div>
@@ -57,14 +57,15 @@ export default {
         })
     },
     clickNew () {
-      sa.get('http://www.mocky.io/v2/5a89f1b32f00007900e46ee9')
+      //      sa.get('http://www.mocky.io/v2/5a89f1b32f00007900e46ee9')
+      sa.get('http://localhost/api/recipes/new')
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request
           if (err) {
             alert(err)
           } else {
-            this.cardData = res.body.cardData
+            this.cardData = JSON.parse(res.text).newRecipes
           }
         })
     },

@@ -77,8 +77,9 @@ export default {
         this.ingredient_item = {ingredient: ''}
       }
     },
-    addDescription () {
-      if (this.checkEmpty(this.des_item)) {
+    addDescription: function () {
+      if (!this.checkEmpty(this.des_item)) {
+      } else {
         this.description.push(this.des_item)
         this.des_item = ''
       }
