@@ -24,11 +24,6 @@ export default new Router({
     {
       path: '/upload',
       component: UploadRecipe
-    },
-    {
-      path: '/test',
-      component: test
     }
-
   ]
 })
