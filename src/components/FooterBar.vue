@@ -1,60 +1,47 @@
 <template>
-  <footer class="page-footer">
-    <!--Footer Links-->
-      <div class="container-fluid">
-      <div class="row">
-        <!--First column-->
-        <div class="col-lg-3 col-md-3 ml-auto">
-        </div>
-        <div class="col-lg-3 col-md-3 ml-auto">
-          <h5 class="title">Content</h5>
-          <p>Recipe site help you to share delicious dish cooking with local ingredients</p>
-        </div>
-
-        <div class="col-lg-3 col-md-3 ml-auto">
-          <h5>Links</h5>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Login</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-    <!--Copyright-->
-    <div class="footer-copyright">
-      <div class="container-fluid">
-        © 2017 Copyright: <a href="#"  rel="nofollow"> www.sample.com </a>
-      </div>
-    </div>
-    <!--/.Copyright-->
-
-  </footer>
+    <v-footer height="auto" class="shaddow">
+      <v-layout row wrap justify-center>
+        <v-btn
+          color="white"
+          flat
+          v-for="link in links"
+          :key="link"
+          class="content"
+        >
+          {{ link }}
+        </v-btn>
+        <v-flex xs12 py-3 text-xs-center white--text>
+          &copy;2018 — <strong>Desertation Project</strong>
+        </v-flex>
+      </v-layout>
+    </v-footer>
 </template>
 
 <script>
 export default {
-  name: 'footer-bar'
+  name: 'footer-bar',
+  data () {
+    return {
+      links: ['Home', 'About Us', 'Team', 'Services', 'Blog', 'Contact Us']
+    }
+  }
 }
 </script>
-
 <style scoped>
-
-  .footer-container a {
-    display: inline-block;
-    font-size: 1.3em;
-    line-height: 3rem;
-    color: white;
-    padding: 0 1rem;
-    text-decoration: none;
-  }
-
-  .footer-container a:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-  .footer-copyright {
-    text-align: center;
+    /**transparent effect
+    * cover screen bottom
+    * rgba better than using opacity
+    * child will inherite if using opacity
+    */
+   .shaddow{
+    width: 100%;
+    margin: 0;
+    padding: 1em;
+    background-color: rgba(0,0,0,0.5);
+    overflow: hidden;
+    box-shadow: 0 0 0 1px hsla(0,0%,100%,.3) inset, 0 .5em 1em rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 1px hsla(0,0%,100%,.3);
+     /*bottom: 0;*/
   }
 
 </style>

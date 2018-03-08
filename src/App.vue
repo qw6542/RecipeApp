@@ -1,9 +1,11 @@
 <template>
-  <div id="app" class="home">
+  <div>
     <div class="bg-mask">
     </div>
-    <nav-bar> </nav-bar>
+    <nav-bar :key=this.$auth.isAuthenticated() > </nav-bar>
+  <v-container id="app">
     <router-view/>
+  </v-container>
     <footer-bar></footer-bar>
   </div>
 </template>
@@ -23,9 +25,9 @@ export default {
 
 <style>
   #app {
-    /*font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;*/
+    /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+    /*-webkit-font-smoothing: antialiased;*/
+    /*-moz-osx-font-smoothing: grayscale;*/
     text-align: center;
   }
   html, head, body, div, p, h3 {

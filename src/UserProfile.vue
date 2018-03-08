@@ -1,29 +1,32 @@
 <template>
   <div>
-    <ul class="profile-bar">
-     <li v-bind:class="{ liselected: active === 'about' }" v-on:click="makeActive('about')">About me</li>
-     <li v-bind:class="{ liselected: active === 'favorite'}" v-on:click="makeActive('favorite'); clickFavorite() " >Favorite</li>
-     <li v-bind:class="{ liselected: active === 'kitchen'}" v-on:click="makeActive('kitchen'); clickKitchen() ">Kitchen</li>
-     <li v-bind:class="{ liselected: active === 'message'}" v-on:click="makeActive('message')">Message</li>
-     <li v-bind:class="{ liselected: active === 'upload'}" v-on:click="makeActive('upload')">Upload</li>
-     <li v-bind:class="{ liselected: active === 'draft'}" v-on:click="makeActive('draft')">Draft</li>
-    </ul>
-    <user-info v-if="active === 'about'"></user-info>
-    <upload-recipe v-if="active === 'upload'"></upload-recipe>
-    <div class="recipe-container" v-if="active === 'kitchen'" >
-      <recipe-card v-for="d in display" v-bind:card="d" :key="d.title" class="card"> </recipe-card>
+    <v-navigation-drawer width="165" class="profile-bar">
+      <v-list>
+        <v-list-tile v-for="item in items" :key="item.title" v-on:click="makeActive(item.title); item.click">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content >
+            <v-list-tile-title >{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+
+    <user-info v-if="active === 'Dashboard'"></user-info>
+    <upload-recipe v-if="active === 'Upload'"></upload-recipe>
+    <div class="cardWrapper" v-if="active === 'Kitchen'" >
+      <recipe-card v-for="d in display" v-bind:card="d" :key="d.title" > </recipe-card>
     </div>
-    <div class="recipe-container" v-if="active === 'favorite'" >
-      <recipe-card v-for="d in display" v-bind:card="d" :key="d.title" class="card"> </recipe-card>
+    <div class="cardWrapper" v-if="active === 'Favorite'" >
+      <recipe-card v-for="d in display" v-bind:card="d" :key="d.title"> </recipe-card>
     </div>
 
   </div>
 </template>
 
 <script>
-import NavBar from './components/NavBar'
-import FooterBar from './components/FooterBar'
-import RecipeCard from './components/RecipeCard2'
+import RecipeCard from './components/RecipeCard'
 import UserInfo from './components-user/UserInfo'
 import UploadRecipe from './components-user/UploadRecipe'
 import sa from 'superagent'
@@ -33,12 +36,19 @@ export default {
   data () {
     return {
       display: [],
-      active: 'about'
+      active: 'Dashboard',
+      /* eslint-disable */
+      items: [
+        { title: 'Dashboard', icon: 'widgets' },
+        { title: 'Favorite', icon: 'event', click: this.Favorite()},
+        { title: 'Kitchen', icon: 'event', click: this.Kitchen()},
+        { title: 'Message', icon: 'info' },
+        { title: 'Upload', icon: 'folder_open' },
+        { title: 'Draft', icon: 'gavel' }
+      ]
     }
   },
   components: {
-    NavBar,
-    FooterBar,
     RecipeCard,
     UserInfo,
     UploadRecipe
@@ -47,7 +57,7 @@ export default {
     makeActive: function (item) {
       this.active = item
     },
-    clickFavorite () {
+    Favorite () {
       sa.get('http://www.mocky.io/v2/5a81cf782f00005600718db6')
         .set('Accept', 'application/json')
         .end((err, res) => {
@@ -59,7 +69,7 @@ export default {
           }
         })
     },
-    clickKitchen () {
+    Kitchen () {
       sa.get('http://www.mocky.io/v2/5a81cf782f00005600718db6')
         .set('Accept', 'application/json')
         .end((err, res) => {
@@ -71,6 +81,9 @@ export default {
           }
         })
     }
+  },
+  mounted () {
+    this.$forceUpdate()
   }
 
 }
@@ -78,47 +91,24 @@ export default {
 
 <style>
 .profile-bar {
-  width: 10%;
   font-size: 1.5em;
-  border-radius: 1.5rem;
   color: white;
-  float:left;
-  background-color: #ad1457;
-  margin-top: 1.5rem;
-  padding: 1rem;
-}
-h1 {
-  color: white;
-  font-size: 3em;
-  font-weight: normal;
+  background-color: rgba(0,0,0,0.5);
+  float: left;
 }
 .profile-bar li:hover {
   background-color: #43a047;
 }
-.card {
-  height: 10rem;
-  background-color: white;
-  margin-bottom: 3rem;
-  padding: 0;
-}
-.card:hover {
-  box-shadow: 0 0 10px #000000 ;
-}
-.liselected {
-  background-color: #0d47a1 !important;
-}
-ul,ul li {
-  list-style-type: none;
-}
-.recipe-container {
-  display: inline-block;
-  width: 60%;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-width: 0;
-  outline-color: rgba(255, 255, 255, 0.7);
-  border-radius: 1.5rem;
+
+.cardWrapper {
   color: white;
-  padding: 1rem;
+  border-radius: 1.5rem;
+  padding: 0;
   margin-top: 1.5rem;
+  background-color: rgba(0,0,0,0.5);
+  float: left;
+  margin-left: 1rem;
+  width: 80%;
 }
+
 </style>

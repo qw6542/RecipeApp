@@ -1,21 +1,23 @@
 <template>
-  <div id="search-box" class="
-    col-xs-10
-    col-xs-offset-1
-    col-sm-8
-    col-sm-offset-2
-    col-md-6
-    col-md-offset-3
-  ">
-    <h1>bala</h1>
-    <form action="#" id="search-form">
+  <v-container>
+    <h1>Receipe</h1>
+    <form action="#" class="search-form">
       <input type="search" v-model="str_search" required/>
       <button type = "submit">Go</button>
     </form>
-    <div id="search-tag-container">
-      <button v-for="item in items" v-on:click="addFood(item)" :key="item"> {{ item }} </button>
-    </div>
-  </div>
+    <v-layout row wrap>
+      <v-flex xs10 offset-xs1 class="search-tag-container">
+    <v-layout off-set row wrap justify-start align-center  v-for="(value, key) in  categories">
+        <v-flex xs12 sm2 md2 lg2 >
+        <v-switch  :label=key color="green"  v-model=selected ></v-switch>
+        </v-flex>
+      <v-flex xs0 sm0 md8 lg8>
+      <v-chip  v-for="i in value"  :key="i"   color="green"  close @click="addFood(i)">{{i}}</v-chip>
+      </v-flex>
+    </v-layout>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -23,18 +25,22 @@ export default {
   name: 'search-box',
   data () {
     return {
-      items: [
-        'apple', 'banana',
-        'carot', 'Pork',
-        'Chicken', 'beef',
-        'milk', 'noodle'
-      ],
-      str_search: ''
-    }
+      str_search: '',
+      selected: [],
+      categories: {
+        'Fruit': ['apple', 'Banana', 'Watermelon'], 'Meat': ['pork', 'Beef', 'Lamp']}}
   },
   methods: {
     addFood (food) {
-      this.str_search += food + ' '
+      if (!this.isSelected(food)) {
+        this.str_search += food + ' '
+        this.selected.push(food)
+      } else {
+        this.selected.splice(this.selected.indexOf(food), 1)
+      }
+    },
+    isSelected (food) {
+      return this.selected.includes(food)
     }
   }
 }
@@ -42,15 +48,14 @@ export default {
 </script>
 
 <style scoped>
-  @import '../assets/css/material.min.css';
 
-  #search-box h1 {
+  .search-box h1 {
     color: white;
     font-size: 3em;
     font-weight: normal;
   }
 
-  #search-form input {
+  .search-form input {
     display: inline-block;
     width: 70%;
     font-size: 1.5em;
@@ -64,7 +69,7 @@ export default {
     margin-top: 1.5rem;
   }
 
-  #search-form button {
+  .search-form button {
     display: inline-block;
     font-size: 1.5em;
     height: 3rem;
@@ -76,18 +81,18 @@ export default {
     background-color: rgba(255, 255, 255, 0);
   }
 
-  #search-form button:hover {
+  .search-form button:hover {
     background-color: rgba(255, 255, 255, 0.3);
   }
 
-  #search-tag-container {
-    /*background: white;*/
-    width: 70%;
+  .search-tag-container {
+    background-color:rgba(0, 0, 0, 0.5);
+    border-radius: 1.5rem;
     margin-top: 2.5rem;
-    padding-left: calc(17% / 2);
+    /*padding-left: calc(17% / 2);*/
+    height: auto;
   }
-
-  #search-tag-container button {
-    margin: 1em;
+  .list {
+    background-color: white;
   }
 </style>

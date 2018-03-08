@@ -1,9 +1,8 @@
 <!--suppress ALL -->
 <template>
-  <div>
+  <v-container>
     <div>
-    <!--<img v-bind:src="recipe.image" class="image" />-->
-
+    <img v-bind:src="recipe.image" class="image" />
     <form action="" class="info">
       <h1>{{recipe.title}}</h1>
       <label for="checkbox" >Favorate</label>
@@ -31,12 +30,13 @@
     </ol>
     <hr>
     <div><p> section fo comment </p></div>
-  </div>
+  </v-container>
 </template>
 
 <script>
 import sa from 'superagent'
 import StarRating from 'vue-star-rating'
+import router from './router'
 export default {
   name: 'recipe-display',
   data () {
@@ -46,12 +46,13 @@ export default {
     }
   },
   components: {
-    StarRating
+    StarRating,
+    router
   },
   methods: {
     loadingRecipe () {
       // sa.get('http://www.mocky.io/v2/5a88bad03000006c007f94bd')
-      sa.get('http://localhost/api/recipes/get')
+      sa.get('http://localhost/api/recipes/' + this.$route.params.id)
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request
@@ -90,7 +91,7 @@ export default {
 
   }
   .method{
-    width:  57%;
+    width:  60%;
     margin-top: 1rem;
     background-color: #00b0ff;
     border-radius: 1.5rem;

@@ -1,18 +1,26 @@
 <template>
-    <div class="info">
-      <h2>ID:{{user.id}}</h2>
-     <form >
-       <div class="name">
-      <label for="name">Name</label>
-      <input id="name" type="text" v-model="user.name">
-       </div>
-       <div class="email">
-         <label for="email">Email</label>
-      <input id="email" type="text" v-model="user.email">
-       </div>
-      <button>Update</button>
-      </form>
-    </div>
+<div>
+    <v-jumbotron :gradient="gradient" class="info">
+      <v-container>
+        <v-layout>
+          <v-flex>
+            <h2>ID:{{user.id}}</h2>
+            <h2>Email:{{user.email}}</h2>
+            <form >
+              <v-text-field
+                label="name"
+                v-model=user.name
+                :rules="nameRules"
+                :counter="10"
+                required>
+              </v-text-field>
+              <v-btn>Update</v-btn>
+            </form>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-jumbotron>
+</div>
 </template>
 
 <script>
@@ -21,7 +29,12 @@ export default {
   name: 'user-info',
   data: function () {
     return {
-      user: {}
+      gradient: 'to top, grey, black',
+      user: {},
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+      ]
     }
   },
   methods: {
@@ -36,6 +49,8 @@ export default {
             this.user = res.body.user
           }
         })
+    },
+    update () {
     }
   },
   mounted: function () {
@@ -46,14 +61,14 @@ export default {
 
 <style scoped>
   .info {
-    width: 70%;
+    width: 80%;
+    float: right;
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+    margin-bottom: 10rem;
+    color: white;
   }
-  .name{
-    padding: 1rem;
-  }
-  .email {
-    padding: 1rem;
-  }
+
 </style>
 
 <!--{-->
