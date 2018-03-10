@@ -1,5 +1,5 @@
 <template>
-    <v-footer height="auto" class="shaddow">
+    <v-footer  height="auto" class="shaddow">
       <v-layout row wrap justify-center>
         <v-btn
           color="white"

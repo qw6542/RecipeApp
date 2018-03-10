@@ -1,11 +1,12 @@
 <template>
   <div >
     <nav class="nav-bar">
-        <a href="/home" class="left">
-        <v-icon></v-icon>
-          Home
-        </a>
+
         <div class="right">
+          <a href="/home">
+            <v-icon>home</v-icon>
+            Home
+          </a>
         <a v-show="!islogin" href="#/login">Sign in</a>
         <a v-show="!islogin" href="#/register" >Sign up</a>
         <a v-show="islogin" href="#/profile" >Profile</a>
@@ -59,9 +60,6 @@ export default {
 
   .nav-bar a:hover {
     background-color: rgba(255,255,255,0.5);
-  }
-  .left {
-    left: auto;
   }
   .right {
     right: auto;

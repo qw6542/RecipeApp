@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-jumbotron :gradient="gradient" class="info">
+    <v-jumbotron :gradient="gradient">
       <v-container>
         <v-layout>
           <v-flex>
@@ -29,7 +29,7 @@ export default {
   name: 'user-info',
   data: function () {
     return {
-      gradient: 'to top, grey, black',
+      gradient: 'to right, black, grey',
       user: {},
       nameRules: [
         v => !!v || 'Name is required',
@@ -60,14 +60,6 @@ export default {
 </script>
 
 <style scoped>
-  .info {
-    width: 80%;
-    float: right;
-    opacity: 0.5;
-    filter: alpha(opacity=50); /* For IE8 and earlier */
-    margin-bottom: 10rem;
-    color: white;
-  }
 
 </style>
 

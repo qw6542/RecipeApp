@@ -7,7 +7,7 @@ import Auth from '../packages/auth/Auth.js'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 /* eslint-disable */
-Vue.use(Vuetify)
+Vue.use(Vuetify )
 Vue.use(Auth)
 router.beforeEach(
   (to,from,next) => {

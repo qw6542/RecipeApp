@@ -1,21 +1,20 @@
 <template>
-  <div>
     <picture-input
       ref="pictureInput"
       @change="onChange"
       width="485"
       height="300"
-      margin="0"
-      padding="0"
+      :zIndex= 1
+      removable
       accept="image/jpeg,image/png"
       size="300"
       buttonClass="btn"
+      class="pad"
       :customStrings="{
         upload: '<h1>Bummer!</h1>',
         drag: 'Drag a 😺 GIF or GTFO'
       }">
     </picture-input>
-  </div>
 </template>
 
 <script>
@@ -42,3 +41,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>
