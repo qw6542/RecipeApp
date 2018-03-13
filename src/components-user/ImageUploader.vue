@@ -1,5 +1,7 @@
 <template>
+  <div>
     <picture-input
+      v-bind:image="image"
       ref="pictureInput"
       @change="onChange"
       width="485"
@@ -15,14 +17,16 @@
         drag: 'Drag a 😺 GIF or GTFO'
       }">
     </picture-input>
+  </div>
 </template>
 
 <script>
 import PictureInput from 'vue-picture-input'
 export default {
-  name: 'file-uploader',
+  name: 'image-uploader',
   data () {
     return {
+      image: ''
     }
   },
   components: {
@@ -32,8 +36,7 @@ export default {
     onChange (image) {
       console.log('New picture selected!')
       if (image) {
-        console.log('Picture loaded.')
-        this.image = image
+        this.$emit('child-say', image)
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!')
       }

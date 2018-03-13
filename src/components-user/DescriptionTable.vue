@@ -9,6 +9,7 @@
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.step }}</td>
+        <td class="text-xs-left">{{ props.item.detail }}</td>
         <td class="justify-center layout px-0">
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
@@ -27,7 +28,7 @@
             </v-card-title>
                 <v-layout wrap>
                   <v-flex>
-                    <v-text-field label="Add Steps" v-model="edited_description.step"></v-text-field>
+                    <v-text-field label="Add Steps" multiLine v-model="edited_description.detail"></v-text-field>
                   </v-flex>
                 </v-layout>
             <v-card-actions>
@@ -49,13 +50,15 @@ export default {
       dialog: false,
       headers: [
         { text: 'Description', sortable: false },
+        {text: 'Detail', value: 'detail'},
         { text: 'Actions', sortable: false }
       ],
       editedIndex: -1,
       edited_description: {
-        step: ''
+        step: 0,
+        detail: ''
       },
-      descriptions: [{}, {}, {}]
+      descriptions: [{step: 1}, {step: 2}, {step: 3}]
     }
   },
   components: {
@@ -93,9 +96,11 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.descriptions[this.editedIndex], this.edited_description)
       } else {
+        this.edited_description['step'] = this.descriptions.length + 1
         this.descriptions.push(this.edited_description)
       }
       this.close()
+      this.$emit('child-say', this.descriptions)
       this.edited_description = {}
     }
   }

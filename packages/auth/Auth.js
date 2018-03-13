@@ -1,5 +1,7 @@
 /* eslint-disable */
 export default function (Vue) {
+  let authenticatedUser = {}
+  let header = {}
   Vue.auth = {
     setToken: (token, expiration) => {
       localStorage.setItem('token', token)
@@ -29,8 +31,26 @@ export default function (Vue) {
       } else {
         return false
       }
+    },
+    setAuthenticatedUser (data) {
+      authenticatedUser = data
+
+    },
+    getAuthenticatedUser () {
+      return authenticatedUser
+    },
+    setHeader() {
+      header= {
+        headers: {
+          'Authorization': 'Bearer ' + this.getToken(),
+          'Accept': 'application/json'}
+      }
+    },
+    getHeader () {
+      return header
     }
   }
+
   Object.defineProperties(Vue.prototype, {
     $auth: {
       get: () => {

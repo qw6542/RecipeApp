@@ -1,6 +1,9 @@
 <template>
   <v-container>
-  <v-form class="white--text form">
+  <v-form v-on:submit.prevent="onSubmit" class="white--text form">
+    <v-chip v-show="error" close class="black" @input="() => (error = !error ) ">
+      <v-avatar class="red">Error</v-avatar>
+      Wrong Email Or Password ! </v-chip>
     <v-text-field
       label="E-mail"
       v-model=email
@@ -11,6 +14,7 @@
       name="password"
       label="Enter your password"
       hint="At least 6 characters"
+      error
       v-model="password"
       min="8"
       :append-icon="show ? 'visibility_off' : 'visibility' "
@@ -18,7 +22,7 @@
       :type="show ? 'password' : 'text'"
       counter>
     </v-text-field>
-    <v-btn @click="submit">Login</v-btn>
+    <v-btn @click="submit" class="green">Login</v-btn>
   </v-form>
   </v-container>
 </template>
@@ -28,6 +32,7 @@
   name: 'login-page',
   data () {
     return {
+      error: '',
       show: true,
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -41,19 +46,35 @@
     submit () {
         var data = {
           client_id: 2,
-          client_secret: 't7mrlOXQGnA1EEtqwFinJahF3leC5LF6NPk3yVIA',
+          client_secret: 'n2yDHdL0cH1Ne7vY57UZsJ11pkx16DkCsem3C6lb',
           grant_type: 'password',
           username: this.email,
-          password: this.password
-        }
+          password: this.password,
+          scope: '*'
+
+    }
       this.$http.post('http://localhost:80/oauth/token', data)
         .then((response) => {
           // Calling the end function will send the request
             this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
+            this.Authentication()
           this.$router.push('/profile')
-        })
+        },
+          () => {
+          this.error = true
+        }
+        )
+    },
+    Authentication () {
+      this.$auth.setHeader()
+      this.$http.get('http://localhost:80/api/user', this.$auth.getHeader())
+        .then(response => {
+            this.$auth.setAuthenticatedUser(response.body)
+          }
+        )
     }
   }
+
 }
 </script>
 <style>

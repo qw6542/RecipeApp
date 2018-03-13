@@ -1,6 +1,5 @@
 <template>
 <div>
-    <v-jumbotron :gradient="gradient">
       <v-container>
         <v-layout>
           <v-flex>
@@ -19,17 +18,13 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </v-jumbotron>
 </div>
 </template>
-
 <script>
-import sa from 'superagent'
 export default {
   name: 'user-info',
   data: function () {
     return {
-      gradient: 'to right, black, grey',
       user: {},
       nameRules: [
         v => !!v || 'Name is required',
@@ -38,36 +33,19 @@ export default {
     }
   },
   methods: {
-    getInfo: function () {
-      sa.get('http://www.mocky.io/v2/5a8b2b1a320000d8171abe01')
-        .set('Accept', 'application/json')
-        .end((err, res) => {
-          // Calling the end function will send the request
-          if (err) {
-            alert(err)
-          } else {
-            this.user = res.body.user
-          }
-        })
-    },
-    update () {
+    setAuthenticatedUser () {
+      this.$auth.setHeader()
+      this.$http.get('http://localhost:80/api/user', this.$auth.getHeader())
+        .then(response => {
+          this.$auth.setAuthenticatedUser(response.body)
+          this.user = response.body
+          this.$emit('child-say', this.user)
+        }
+        )
     }
   },
-  mounted: function () {
-    this.getInfo()
+  mounted () {
+    this.setAuthenticatedUser()
   }
 }
 </script>
-
-<style scoped>
-
-</style>
-
-<!--{-->
-<!--"islogin":true,-->
-<!--"user":{-->
-<!--"id" : 1,-->
-<!--"name" : "alice",-->
-<!--"email" : "alice@example.com"-->
-<!--}-->
-<!--}-->

@@ -7,12 +7,12 @@
     </form>
     <v-layout row wrap>
       <v-flex xs10 offset-xs1 class="search-tag-container">
-    <v-layout off-set row wrap justify-start align-center  v-for="(value, key) in  categories" :key="key">
+    <v-layout off-set row wrap justify-start align-center  v-for="(value, key) in  glossary" :key="key">
         <v-flex xs12 sm2 md2 lg2 >
         <v-switch  :label=key color="green"  v-model=selected :value=key @change="toggle(key)"></v-switch>
         </v-flex>
       <v-flex xs0 sm0 md8 lg8>
-      <v-chip v-for="i in value" :key="i"  color="green" close @click="addFood(i, $event)">{{i}}</v-chip>
+      <v-chip v-for="i in value" :key="i"  color="green" close @click="addFood(i, $event)" @input="deleteChip(value,i)">{{i}}</v-chip>
       </v-flex>
     </v-layout>
       </v-flex>
@@ -31,13 +31,13 @@ export default {
     return {
       str_search: '',
       selected: [],
-      categories: {
-        'Fruit': ['apple', 'Banana', 'Watermelon'],
-        'Meat': ['pork', 'Beef', 'Lamp'],
-        'Sauce': ['Soy Sauce', 'Hoisin sauce', 'Black vinegar', 'Oyster sauce'],
-        'spice': [ 'Dried chili peppers', 'Sichuan peppercorn', 'Star anise' ]
+      glossary: {
+        'Sauce': ['Soy Sauce', 'Hoisin sauce', 'Black vinegar', 'Oyster sauce', 'Bean curd'],
+        'Spice': [ 'Dried chili peppers', 'Sichuan peppercorn', 'Star anise' ],
+        'Vegetable': ['Spring Onion', 'Chives', 'Pakchoi', 'Cabbage'],
+        'Oil': ['Peanut Oil', 'Sesame Oil', 'Rap Oil']
       },
-      categories_backup: []
+      glossary_backup: []
     }
   },
   methods: {
@@ -51,20 +51,23 @@ export default {
         this.selected.splice(this.selected.indexOf(food), 1)
       }
     },
+    deleteChip (cate, item) {
+      cate.splice(item, 1)
+    },
     isSelected (food) {
       return this.selected.includes(food)
     },
     toggle (item) {
       if (this.isSelected(item)) {
-        this.categories[item] = []
+        this.glossary[item] = []
       } else {
-        this.categories[item] = this.categories_backup[item]
+        this.glossary[item] = this.glossary_backup[item]
       }
     }
   },
   mounted () {
     // copy data inside array
-    this.categories_backup = JSON.parse(JSON.stringify(this.categories))
+    this.glossary_backup = JSON.parse(JSON.stringify(this.glossary))
   }
 }
 

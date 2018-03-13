@@ -9,7 +9,7 @@
       class="black profile"
     >
       <v-list>
-        <v-list-tile v-for="item in items" :key="item.title" v-on:click="makeActive(item.title); item.click">
+        <v-list-tile v-for="item in items" :key="item.title" v-on:click="makeActive(item.title);" >
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -23,13 +23,13 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
     </v-toolbar>
 
-      <user-info v-if="active === 'Dashboard'"></user-info>
+      <user-info  v-if="active === 'Dashboard'" v-on:child-say="parseUser" ></user-info>
       <upload-recipe v-if="active === 'Upload'"></upload-recipe>
-    <div class="cardWrapper" v-if="active === 'Kitchen'" >
-      <recipe-card v-for="d in display" v-bind:card="d" :key="d.title" > </recipe-card>
+    <div  v-show="active === 'Kitchen'" >
+      <recipe-card v-for="d in kitchen_data" v-bind:card="d" :key="d.id" > </recipe-card>
     </div>
-    <div class="cardWrapper" v-if="active === 'Favorite'" >
-      <recipe-card v-for="d in display" v-bind:card="d" :key="d.title"> </recipe-card>
+    <div  v-show="active === 'Favorite'" >
+      <recipe-card v-for="k in favorite_data" v-bind:card="k" :key="k.id"> </recipe-card>
     </div>
   </v-app>
   </v-flex>
@@ -39,23 +39,27 @@
 import RecipeCard from './components/RecipeCard'
 import UserInfo from './components-user/UserInfo'
 import UploadRecipe from './components-user/UploadRecipe'
-import sa from 'superagent'
 
 export default {
   name: 'user-profile',
   data () {
     return {
+      user: '',
       drawer: 'true',
-      display: [],
       active: 'Dashboard',
-      /* eslint-disable */
+      favorite_data: [],
+      kitchen_data: [],
       items: [
-        { title: 'Dashboard', icon: 'widgets' },
-        { title: 'Favorite', icon: 'event', click: this.Favorite()},
-        { title: 'Kitchen', icon: 'event', click: this.Kitchen()},
-        { title: 'Message', icon: 'info' },
-        { title: 'Upload', icon: 'folder_open' },
-        { title: 'Draft', icon: 'gavel' }
+        { title: 'Dashboard', icon: 'widgets' }, {
+          title: 'Favorite', icon: 'event'},
+        {
+          title: 'Kitchen', icon: 'event'},
+        {
+          title: 'Message', icon: 'info' },
+        {
+          title: 'Upload', icon: 'folder_open' },
+        {
+          title: 'Draft', icon: 'gavel' }
       ]
     }
   },
@@ -65,39 +69,35 @@ export default {
     UploadRecipe
   },
   methods: {
+    parseUser (user) {
+      this.user = user
+    },
     makeActive: function (item) {
       this.active = item
+      switch (item) {
+        case 'Favorite':
+          this.Favorite()
+          break
+        case 'Kitchen':
+          this.Kitchen()
+          break
+      }
     },
     Favorite () {
-      sa.get('http://www.mocky.io/v2/5a81cf782f00005600718db6')
-        .set('Accept', 'application/json')
-        .end((err, res) => {
-          // Calling the end function will send the request
-          if (err) {
-            alert(err)
-          } else {
-            this.display = res.body.cardData
-          }
+      this.$http.get('http://localhost:80/api/favorite', this.$auth.getHeader())
+        .then(response => {
+          this.favorite_data = response.body
         })
     },
     Kitchen () {
-      sa.get('http://www.mocky.io/v2/5a81cf782f00005600718db6')
-        .set('Accept', 'application/json')
-        .end((err, res) => {
-          // Calling the end function will send the request
-          if (err) {
-            alert(err)
-          } else {
-            this.display = res.body.cardData
-          }
-        })
+      this.$http.get('http://localhost:80/api/kitchen/' + this.user.id)
+        .then(response => {
+          this.kitchen_data = response.body
+          console.log(response.body)
+        }
+        )
     }
-  },
-  mounted () {
-    this.Favorite()
-    this.Kitchen()
   }
-
 }
 </script>
 
@@ -110,23 +110,10 @@ export default {
   background-color: #43a047;
 }
 
-.cardWrapper {
-  color: white;
-  border-radius: 1.5rem;
-  padding: 0;
-  margin-top: 1.5rem;
-  background-color: rgba(0,0,0,0.5);
-  float: left;
-  margin-left: 1rem;
-  width: 80%;
-}
 .wrapper {
   opacity: 0.7;
 }
 .smaller_width{
   max-width: 165px;
 }
-  .trans {
-  }
-
 </style>

@@ -9,10 +9,10 @@
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.Quantity }}</td>
-        <td class="text-xs-right">{{ props.item.Measurement }}</td>
-        <td class="text-xs-right">{{ props.item.Prepare }}</td>
-        <td class="text-xs-right">{{ props.item.Get_From }}</td>
+        <td class="text-xs-right">{{ props.item.quantity }}</td>
+        <td class="text-xs-right">{{ props.item.measurement }}</td>
+        <td class="text-xs-right">{{ props.item.preparation }}</td>
+        <td class="text-xs-right">{{ props.item.get_from }}</td>
         <td class="justify-center layout px-0">
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
@@ -31,19 +31,19 @@
             </v-card-title>
                 <v-layout row wrap>
                   <v-flex>
-                    <v-text-field label="Ingredient" v-model="editedItem.name"></v-text-field>
+                    <v-text-field label="Ingredient" v-model="editedItem.name" required></v-text-field>
                   </v-flex>
                   <v-flex  md4>
-                    <v-text-field md6  type="integer" label="Quantity" v-model="editedItem.Quantity"></v-text-field>
+                    <v-text-field md6  type="integer" label="Quantity" v-model="editedItem.quantity"></v-text-field>
                   </v-flex>
                     <v-flex  md4>
-                    <v-text-field  md6 label="Measurement" v-model="editedItem.Measurement"></v-text-field>
+                    <v-text-field  md6 label="Measurement" v-model="editedItem.measurement"></v-text-field>
                   </v-flex>
                   <v-flex >
-                    <v-text-field label="Prepare" v-model="editedItem.Prepare"></v-text-field>
+                    <v-text-field label="Prepare" v-model="editedItem.preparation"></v-text-field>
                   </v-flex>
                   <v-flex>
-                    <v-text-field label="Get from" v-model="editedItem.Get_From"></v-text-field>
+                    <v-text-field label="Get from" v-model="editedItem.get_from"></v-text-field>
                   </v-flex>
                 </v-layout>
             <v-card-actions>
@@ -66,23 +66,22 @@ export default {
       headers: [
         {
           text: 'Ingredient',
-          align: 'left',
-          sortable: false,
-          value: 'name'
+          value: 'name',
+          sortable: false
         },
-        { text: 'Quantity', value: 'Quantity' },
-        { text: 'Measurement', value: 'Measurement' },
-        { text: 'Prepare', value: 'Prepare' },
-        { text: 'Get From', value: 'Get_From' },
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: 'Quantity', value: 'quantity' },
+        { text: 'Measurement', value: 'measurement' },
+        { text: 'Prepare', value: 'preparation' },
+        { text: 'Get From', value: 'get_from' },
+        { text: 'Actions', sortable: false }
       ],
       editedIndex: -1,
       editedItem: {
         name: '',
-        Quantity: '',
-        Measurement: '',
-        Prepare: '',
-        Get_From: ''
+        quantity: '',
+        measurement: '',
+        preparation: '',
+        get_from: ''
       },
       ingredients: [{}, {}, {}]
     }
@@ -125,6 +124,7 @@ export default {
         this.ingredients.push(this.editedItem)
       }
       this.editedItem = {}
+      this.$emit('child-say', this.ingredients)
       this.close()
     }
   }

@@ -1,34 +1,71 @@
 <template>
   <v-app  class="wrapper">
-  <form action="">
+  <v-form action="" v-model="valid" >
     <h2>Add Your Own recipe:</h2>
-    <v-text-field label="Recipe Title" color="white" :dark=false v-model="title" > </v-text-field>
-      <file-uploader></file-uploader>
+    <v-text-field label="Recipe Title" color="white" :dark=false  :rules="titleRules" required v-model="title" > </v-text-field>
+      <image-uploader  v-on:child-say="uploadImage"></image-uploader>
     <br/>
-    <IngredientTable class="mx-2"></IngredientTable>
-    <DescriptionTable class="mx-2"></DescriptionTable>
+    <IngredientTable v-on:child-say="inputIngredient" class="mx-2"></IngredientTable>
+    <DescriptionTable v-on:child-say="inputDescription" class="mx-2"></DescriptionTable>
       <v-btn dark>Save All</v-btn>
-      <v-btn color="success">Submit</v-btn>
-
-  </form >
+      <v-btn @click="submit" :disabled="!valid" color="success">Submit</v-btn>
+  </v-form >
+      <p v-if="success"> Recipe Uploaded</p>
   </v-app>
 </template>
 
 <script>
-import FileUploader from '../components-user/FileUploader'
+import ImageUploader from './ImageUploader'
 import IngredientTable from '../components-user/IngredientTable'
 import DescriptionTable from '../components-user/DescriptionTable'
 export default {
   name: 'upload-recipe',
   data: function () {
     return {
-      title: ''
+      title: '',
+      success: false,
+      valid: false,
+      titleRules: [
+        v => !!v || 'title is required'
+      ],
+      newRecipe: {title: '',
+        image: '',
+        user_id: '',
+        ingredients: [],
+        descriptions: []
+      }
+    }
+  },
+  methods: {
+    uploadImage (image) {
+      this.newRecipe.image = image
+    },
+    inputDescription (data) {
+      this.newRecipe.descriptions = data
+    },
+    inputIngredient (data) {
+      this.newRecipe.ingredients = data
+    },
+    submit  () {
+      this.newRecipe.user_id = this.$auth.getAuthenticatedUser().id
+      this.newRecipe.title = this.title
+      console.log(this.newRecipe.ingredients)
+      this.$auth.setHeader()
+      this.$http.post('http://localhost:80/api/recipes/create', this.newRecipe)
+        .then(response => {
+          this.success = true
+          this.newRecipe = {}
+        }, (error) => {
+          console.log(error)
+        })
     }
   },
   components: {
-    FileUploader,
+    ImageUploader,
     IngredientTable,
     DescriptionTable
+  },
+  mounted () {
   }
 }
 </script>

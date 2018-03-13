@@ -1,36 +1,53 @@
-<!--suppress ALL -->
 <template>
-  <v-container>
-    <div>
-    <img v-bind:src="recipe.image" class="image" />
+  <v-app class="width">
     <form action="" class="info">
       <h1>{{recipe.title}}</h1>
       <label for="checkbox" >Favorate</label>
       <input type="checkbox" id="checkbox" v-model=checked>
-      <p class="">{{recipe.name}}</p>
+      <p>{{recipe.name}}</p>
+      <p>By {{recipe.user_name}}</p>
       <star-rating v-bind:star-size=15 v-model=recipe.rating class=""> </star-rating>
+      <v-btn icon>
+        <v-icon>favorite</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon>bookmark</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon>share</v-icon>
+      </v-btn>
     </form>
-    </div>
+    <img v-bind:src="recipe.image" class="image" />
+      <div class="wrapper">
+    <v-data-table
+      :headers="headers"
+      :items="recipe.ingredients"
+      class="elevation-1 ingredient"
+    >
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item }}</td>
+        <td class="text-xs-left">{{ props.item.Quantity }}</td>
+        <td class="text-xs-left">{{ props.item.Measurement }}</td>
+        <td class="text-xs-left">{{ props.item.Prepare }}</td>
+        <td class="text-xs-left">{{ props.item.Get_From }}</td>
+      </template>
+    </v-data-table>
 
-    <table class="ingredient">
-      <tr>
-        <th>Quantity</th>
-        <th>Measurement</th>
-        <th>Ingredient</th>
-      </tr>
-      <tr  v-for="i in recipe.ingredients" :key="i.id">
-        <td>{{i.quantity}}</td>
-        <td>{{i.measurement}}</td>
-        <td>{{i}}</td>
-      </tr>
-    </table>
-    <ol class="method">
-     <h2>Methods</h2>
-      <li v-for="i in recipe.descriptions" :key="i.id">{{i}}</li>
-    </ol>
+    <v-data-table
+      :headers="headers2"
+      :items="recipe.descriptions"
+      class="elevation-1 ingredient"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-left">{{ props.item.step }}</td>
+        <td>{{ props.item }}</td>
+      </template>
+    </v-data-table>
+      </div>
+
     <hr>
-    <div><p> section fo comment </p></div>
-  </v-container>
+    <div><p> section for comment </p></div>
+  </v-app>
 </template>
 
 <script>
@@ -42,6 +59,15 @@ export default {
   data () {
     return {
       recipe: [],
+      headers: [{text: 'Ingredient', value: 'Ingredient', sortable: false},
+        {text: 'Quantity', value: 'Quantity'},
+        {text: 'Measurement', value: 'Measurement'},
+        {text: 'Prepare', value: 'Prepare'},
+        {text: 'Get From', value: 'Get_From'}],
+      headers2: [
+        {text: 'Step', value: 'Step'},
+        {text: 'Detail', value: 'Detail', sortable: false}
+      ],
       checked: false
     }
   },
@@ -70,50 +96,12 @@ export default {
 }
 </script>
 <style scoped>
-  .image{
-    width: 60%;
-    border-radius: 1.5rem;
-    height: 30rem;
-  }
-  .info{
-    background-color: #76ff03;
-    width: 60%;
-    margin-left:20%;
-    border-radius: 1.5rem;
-
-  }
-  .ingredient{
-    width: 60%;
-    margin-left:20%;
-    margin-top: 1rem;
-    background-color: #00b0ff;
-    border-radius: 1.5rem;
-
-  }
-  .method{
-    width:  60%;
-    margin-top: 1rem;
-    background-color: #00b0ff;
-    border-radius: 1.5rem;
-    margin-left:20%;
-
+.wrapper {
+  /*background-color: black;*/
+}
+  .width {
+    width: 80%;
+    margin-left: 10%;
   }
 
 </style>
-
-<!--{-->
-<!--"Recipe":{-->
-<!--"id": = 1-->
-<!--"title": "mytitle",-->
-<!--"name": "By alice",-->
-<!--"rating": 5,-->
-<!--"image": "http://leakestreetarches.london/wp-content/uploads/2018/01/coffee-1024x683.jpg" ,-->
-<!--"ingredients": ["apple","banana","carot"] ,-->
-<!--"description": [-->
-<!--"In a pan, roast together pomegranate and cumin seeds and grind to a powder.",-->
-<!--"Put water, chickpeas, 4 tsp salt, cardamoms, cinnamon and cloves in cooker. Stir.",-->
-<!--"Close cooker. Bring to full pressure on high heat. Reduce heat and cook for 18 minutes.",-->
-<!--"Remove cooker from heat. Allow to cool naturally."-->
-<!--]-->
-<!--}-->
-<!--}-->

@@ -18,13 +18,26 @@
         label="Enter your password"
         hint="At least 6 characters"
         v-model="password"
-        min="8"
+        min="6"
+        :type="show ? 'password' : 'text'"
+        counter
+        required
+      >
+      </v-text-field>
+      <v-text-field
+        name="password"
+        label="Confirm Your password"
+        v-model="password_confirmation"
+        min="6"
         :append-icon="show ? 'visibility' : 'visibility_off'"
         :append-icon-cb="() => (show = !show)"
         :type="show ? 'password' : 'text'"
-        counter>
+        counter
+        required
+      >
       </v-text-field>
-      <v-btn @click="submit" :disabled="!valid">Register</v-btn>
+      <p v-show="password != password_confirmation">passowrd must match !</p>
+      <v-btn @click="submit" :disabled="!valid" class="green">Register</v-btn>
     </v-form>
   </v-container>
 </template>
@@ -33,10 +46,14 @@
 
   export default {
     name: 'register-page',
+    component: {
+    },
     data () {
       return {
         show: false,
         valid: false,
+        match: false,
+        success: false,
         name: '',
         nameRules: [
           v => !!v || 'Name is required',
@@ -47,15 +64,27 @@
           v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
         ],
         email: '',
-        password: ''
+        password: '',
+        password_confirmation: ''
       }
     },
     methods: {
       submit () {
-        if (this.$refs.form.validate()) {
-          // Native form submission is not yet supported
-//          .post('/api/submit',)
+        var data = {
+          name: this.name,
+          email: this.email,
+          password: this.password
         }
+        this.$http.post('http://localhost:80/api/register', data)
+          .then(() => {
+              // Calling the end function will send the request
+              alert('Register Success!')
+              this.$router.push('/login')
+            },
+            () => {
+              this.error = true
+            }
+          )
       }
     }
   }
