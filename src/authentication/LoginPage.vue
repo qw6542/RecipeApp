@@ -46,7 +46,7 @@
     submit () {
         var data = {
           client_id: 2,
-          client_secret: 'n2yDHdL0cH1Ne7vY57UZsJ11pkx16DkCsem3C6lb',
+          client_secret: 'ar2AFQjtoBiq4c71FspqC2ZffPmGEmqUCyVAJvUf',
           grant_type: 'password',
           username: this.email,
           password: this.password,
