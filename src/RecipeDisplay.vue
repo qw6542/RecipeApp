@@ -1,11 +1,12 @@
 <template>
   <v-app class="width">
-    <form action="" class="info">
+    <form action="" class="success">
       <h1>{{recipe.title}}</h1>
-      <label for="checkbox" >Favorate</label>
+      <label for="checkbox" >Favorite</label>
       <input type="checkbox" id="checkbox" v-model=checked>
       <p>{{recipe.name}}</p>
       <p>By {{recipe.user_name}}</p>
+      <p>At {{recipe.created_at}}</p>
       <star-rating v-bind:star-size=15 v-model=recipe.rating class=""> </star-rating>
       <v-btn icon>
         <v-icon>favorite</v-icon>
@@ -25,11 +26,11 @@
       class="elevation-1 ingredient"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item }}</td>
-        <td class="text-xs-left">{{ props.item.Quantity }}</td>
-        <td class="text-xs-left">{{ props.item.Measurement }}</td>
-        <td class="text-xs-left">{{ props.item.Prepare }}</td>
-        <td class="text-xs-left">{{ props.item.Get_From }}</td>
+        <td>{{ props.item.name }}</td>
+        <td class="text-xs-left">{{ props.item.quantity }}</td>
+        <td class="text-xs-left">{{ props.item.measurement }}</td>
+        <td class="text-xs-left">{{ props.item.preparation }}</td>
+        <td class="text-xs-left">{{ props.item.get_from }}</td>
       </template>
     </v-data-table>
 
@@ -40,7 +41,7 @@
     >
       <template slot="items" slot-scope="props">
         <td class="text-xs-left">{{ props.item.step }}</td>
-        <td>{{ props.item }}</td>
+        <td>{{ props.item.detail }}</td>
       </template>
     </v-data-table>
       </div>
@@ -59,14 +60,14 @@ export default {
   data () {
     return {
       recipe: [],
-      headers: [{text: 'Ingredient', value: 'Ingredient', sortable: false},
+      headers: [{text: 'Ingredient', sortable: false},
         {text: 'Quantity', value: 'Quantity'},
         {text: 'Measurement', value: 'Measurement'},
         {text: 'Prepare', value: 'Prepare'},
         {text: 'Get From', value: 'Get_From'}],
       headers2: [
         {text: 'Step', value: 'Step'},
-        {text: 'Detail', value: 'Detail', sortable: false}
+        {text: 'Detail', sortable: false}
       ],
       checked: false
     }

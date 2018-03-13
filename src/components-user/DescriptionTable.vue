@@ -58,7 +58,7 @@ export default {
         step: 0,
         detail: ''
       },
-      descriptions: [{step: 1}, {step: 2}, {step: 3}]
+      descriptions: [{step: 1, detail: ''}, {step: 2, detail: ''}, {step: 3, detail: ''}]
     }
   },
   components: {

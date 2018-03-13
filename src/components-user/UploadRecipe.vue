@@ -10,7 +10,8 @@
       <v-btn dark>Save All</v-btn>
       <v-btn @click="submit" :disabled="!valid" color="success">Submit</v-btn>
   </v-form >
-      <p v-if="success"> Recipe Uploaded</p>
+      <v-chip  v-model="success" close class="success" > Recipe Uploaded</v-chip>
+    <v-chip v-model="warning" close class="warning"> Please Enter At Least  One Ingredient,Reciepe and Image</v-chip>
   </v-app>
 </template>
 
@@ -24,6 +25,7 @@ export default {
     return {
       title: '',
       success: false,
+      warning: false,
       valid: false,
       titleRules: [
         v => !!v || 'title is required'
@@ -47,17 +49,21 @@ export default {
       this.newRecipe.ingredients = data
     },
     submit  () {
-      this.newRecipe.user_id = this.$auth.getAuthenticatedUser().id
-      this.newRecipe.title = this.title
-      console.log(this.newRecipe.ingredients)
-      this.$auth.setHeader()
-      this.$http.post('http://localhost:80/api/recipes/create', this.newRecipe)
-        .then(response => {
-          this.success = true
-          this.newRecipe = {}
-        }, (error) => {
-          console.log(error)
-        })
+      if (this.newRecipe.ingredients.length === 0 || this.newRecipe.descriptions.length === 0 ||
+        this.newRecipe.image === undefined) {
+        this.warning = true
+      } else {
+        this.newRecipe.user_id = this.$auth.getAuthenticatedUser().id
+        this.newRecipe.title = this.title
+        this.$auth.setHeader()
+        this.$http.post('http://localhost:80/api/recipes/create', this.newRecipe)
+          .then(response => {
+            this.success = true
+            this.newRecipe.splice(0, this.newReciepe.length)
+          }, (error) => {
+            console.log(error)
+          })
+      }
     }
   },
   components: {

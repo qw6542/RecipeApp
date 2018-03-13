@@ -1,9 +1,9 @@
 <template>
-  <v-container>
-    <h1>Receipe</h1>
+  <div>
     <form action="#" class="search-form">
+      <h1>Receipe</h1>
       <input type="search" v-model="str_search" required/>
-      <button type = "submit">Go</button>
+      <button type="submit" @click="search">Go</button>
     </form>
     <v-layout row wrap>
       <v-flex xs10 offset-xs1 class="search-tag-container">
@@ -17,11 +17,8 @@
     </v-layout>
       </v-flex>
     </v-layout>
-  </v-container>
+  </div>
 </template>
-<!--<template slot="no-data">-->
-  <!--<v-btn color="primary" @click="initialize">Reset</v-btn>-->
-<!--</template>-->
 <script>
 /* eslint-disable no-trailing-spaces */
 
@@ -30,6 +27,7 @@ export default {
   data () {
     return {
       str_search: '',
+      result: '',
       selected: [],
       glossary: {
         'Sauce': ['Soy Sauce', 'Hoisin sauce', 'Black vinegar', 'Oyster sauce', 'Bean curd'],
@@ -63,6 +61,15 @@ export default {
       } else {
         this.glossary[item] = this.glossary_backup[item]
       }
+    },
+    search () {
+      let data = {'search': this.str_search}
+      this.$http.post('http://localhost:80/api/recipes/search', data)
+        .then(response => {
+          console.log(response)
+          this.result = response
+          this.$emit('child-say', response)
+        })
     }
   },
   mounted () {
@@ -74,16 +81,13 @@ export default {
 </script>
 
 <style scoped>
-
-  .search-box h1 {
+  .search-form h1 {
     color: white;
     font-size: 3em;
     font-weight: normal;
   }
-
   .search-form input {
     display: inline-block;
-    width: 70%;
     font-size: 1.5em;
     height: 3rem;
     background-color: rgba(255, 255, 255, 0.5);
@@ -93,6 +97,7 @@ export default {
     color: white;
     padding: 1rem;
     margin-top: 1.5rem;
+    width: 70%;
   }
 
   .search-form button {
