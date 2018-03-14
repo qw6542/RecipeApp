@@ -35,7 +35,7 @@ export default {
   methods: {
     setAuthenticatedUser () {
       this.$auth.setHeader()
-      this.$http.get('http://localhost:80/api/user', this.$auth.getHeader())
+      this.$http.get('http://www.recipe123.uk/api/user', this.$auth.getHeader())
         .then(response => {
           this.$auth.setAuthenticatedUser(response.body)
           this.user = response.body

@@ -75,7 +75,7 @@
           email: this.email,
           password: this.password
         }
-        this.$http.post('http://localhost:80/api/register', data)
+        this.$http.post('http://www.recipe123.uk/api/register', data)
           .then(() => {
               // Calling the end function will send the request
               alert('Register Success!')

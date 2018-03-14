@@ -54,7 +54,7 @@ export default {
       console.log(search.body)
     },
     clickHot () {
-      sa.get('http://localhost/api/recipes/collections/hot')
+      sa.get('http://www.recipe123.uk/api/recipes/collections/hot')
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request
@@ -66,8 +66,7 @@ export default {
         })
     },
     clickNew () {
-      //      sa.get('http://www.mocky.io/v2/5a89f1b32f00007900e46ee9')
-      sa.get('http://localhost/api/recipes/collections/new')
+      sa.get('http://www.recipe123.uk/api/recipes/collections/new')
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request

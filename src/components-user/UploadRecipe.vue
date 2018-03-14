@@ -56,7 +56,7 @@ export default {
         this.newRecipe.user_id = this.$auth.getAuthenticatedUser().id
         this.newRecipe.title = this.title
         this.$auth.setHeader()
-        this.$http.post('http://localhost:80/api/recipes/create', this.newRecipe)
+        this.$http.post('http://www.recipe123.uk/api/recipes/create', this.newRecipe)
           .then(response => {
             this.success = true
             this.newRecipe.splice(0, this.newReciepe.length)

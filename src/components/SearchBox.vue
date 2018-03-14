@@ -64,7 +64,7 @@ export default {
     },
     search () {
       let data = {'search': this.str_search}
-      this.$http.post('http://localhost:80/api/recipes/search', data)
+      this.$http.post('http://www.recipe123.uk/api/recipes/search', data)
         .then(response => {
           console.log(response)
           this.result = response

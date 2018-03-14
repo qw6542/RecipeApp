@@ -78,8 +78,7 @@ export default {
   },
   methods: {
     loadingRecipe () {
-      // sa.get('http://www.mocky.io/v2/5a88bad03000006c007f94bd')
-      sa.get('http://localhost/api/recipes/' + this.$route.params.id)
+      sa.get('http://www.recipe123.uk/api/recipes/' + this.$route.params.id)
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request

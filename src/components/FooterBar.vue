@@ -1,7 +1,7 @@
 <template>
     <v-footer  height="auto" class="footer">
       <v-layout row wrap justify-center>
-        <a color="white" flat href="/home" >Home </a>
+        <a color="white" flat href="/" >Home </a>
         <a color="white" flat  href="https://www.surveymonkey.co.uk/r/8KBXPMT">Survey</a>
         <a color="white" flat>Bug Report</a>
         <a color="white" flat>Contact </a>
@@ -18,7 +18,6 @@ export default {
   name: 'footer-bar',
   data () {
     return {
-      links: ['Home', 'About Us', 'Team', 'Services', 'Blog', 'Contact Us']
     }
   }
 }

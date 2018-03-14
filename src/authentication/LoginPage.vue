@@ -46,14 +46,14 @@
     submit () {
         var data = {
           client_id: 2,
-          client_secret: 'ar2AFQjtoBiq4c71FspqC2ZffPmGEmqUCyVAJvUf',
+          client_secret: 'YwxEhTlJ8wo292N4cYr0Ma9Zg7OW6kRmq1IbX0Fw',
           grant_type: 'password',
           username: this.email,
           password: this.password,
           scope: '*'
 
     }
-      this.$http.post('http://localhost:80/oauth/token', data)
+      this.$http.post('http://www.recipe123.uk/api/oauth/token', data)
         .then((response) => {
           // Calling the end function will send the request
             this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
@@ -67,7 +67,7 @@
     },
     Authentication () {
       this.$auth.setHeader()
-      this.$http.get('http://localhost:80/api/user', this.$auth.getHeader())
+      this.$http.get('http://www.recipe123.uk/api/user', this.$auth.getHeader())
         .then(response => {
             this.$auth.setAuthenticatedUser(response.body)
           }

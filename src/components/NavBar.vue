@@ -3,7 +3,7 @@
     <nav class="nav-bar">
 
         <div class="right">
-          <a href="/home">
+          <a href="/">
             <v-icon>home</v-icon>
             Home
           </a>
