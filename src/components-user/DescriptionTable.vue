@@ -55,10 +55,10 @@ export default {
       ],
       editedIndex: -1,
       edited_description: {
-        step: 0,
+        step: '',
         detail: ''
       },
-      descriptions: [{step: 1, detail: ''}, {step: 2, detail: ''}, {step: 3, detail: ''}]
+      descriptions: [{}, {}, {}]
     }
   },
   components: {
@@ -76,13 +76,15 @@ export default {
   methods: {
     editItem (item) {
       this.editedIndex = this.descriptions.indexOf(item)
+      item.step = this.editedIndex + 1
       this.edited_description = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      const index = this.descriptions.indexOf(item)
+      let index = this.descriptions.indexOf(item)
       confirm('Are you sure you want to delete this item?') && this.descriptions.splice(index, 1)
+      this.next_index = index
     },
 
     close () {
@@ -96,8 +98,8 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.descriptions[this.editedIndex], this.edited_description)
       } else {
-        this.edited_description['step'] = this.descriptions.length + 1
         this.descriptions.push(this.edited_description)
+        this.next_index = this.next_index + 1
       }
       this.close()
       this.$emit('child-say', this.descriptions)

@@ -1,25 +1,37 @@
 <template>
   <v-app class="width">
-    <form action="" class="success">
-      <h1>{{recipe.title}}</h1>
-      <label for="checkbox" >Favorite</label>
-      <input type="checkbox" id="checkbox" v-model=checked>
+    <v-jumbotron
+      :gradient="gradient"
+      class="height"
+    >
+      <h1>{{recipe.title}} </h1>
+      <v-chip @click="goToMethodPage">{{recipe.method}}</v-chip>
+      <v-chip @click="goToMethodPage">{{recipe.style}}</v-chip>
+      <v-btn flat icon color="blue lighten-2" class="front">
+        <v-icon>thumb_up</v-icon>
+      </v-btn>
       <p>{{recipe.name}}</p>
       <p>By {{recipe.user_name}}</p>
       <p>At {{recipe.created_at}}</p>
-      <star-rating v-bind:star-size=15 v-model=recipe.rating class=""> </star-rating>
-      <v-btn icon>
-        <v-icon>favorite</v-icon>
+      <v-flex offset-xs2 offset-sm4 offset-md4 offset-lg5>
+      <star-rating v-bind:star-size=30 v-model=recipe.rating></star-rating>
+      </v-flex>
+      <v-btn
+        class="white--text"
+        fab
+        icon
+        small
+        v-for="(social, i) in socials"
+        :key="i"
+        :color="social.color"
+        :href= concatenate(social.url,recipe.id)
+      >
+        <v-icon>{{social.icon}}</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>bookmark</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>share</v-icon>
-      </v-btn>
-    </form>
-    <img v-bind:src="recipe.image" class="image" />
-      <div class="wrapper">
+    </v-jumbotron>
+    <v-carousel>
+      <v-carousel-item  :src="recipe.image" ></v-carousel-item>
+    </v-carousel>
     <v-data-table
       :headers="headers"
       :items="recipe.ingredients"
@@ -44,10 +56,6 @@
         <td>{{ props.item.detail }}</td>
       </template>
     </v-data-table>
-      </div>
-
-    <hr>
-    <div><p> section for comment </p></div>
   </v-app>
 </template>
 
@@ -59,7 +67,25 @@ export default {
   name: 'recipe-display',
   data () {
     return {
+      gradient: 'to top right, black, grey',
       recipe: [],
+      socials: [
+        {
+          icon: 'fab fa-facebook',
+          color: 'indigo',
+          url: 'https://www.facebook.com/sharer/sharer.php?u=http%3A//www.recipe123.uk/%23/display/'
+        },
+        {
+          icon: 'fab fa-linkedin',
+          color: 'cyan darken-1',
+          url: 'https://www.linkedin.com/shareArticle?mini=true&url=http%3A//www.recipe123.uk/%23/display/&title=Recipe&summary=&source='
+        },
+        {
+          icon: 'fab fa-twitter',
+          color: 'red lighten-3',
+          url: 'https://twitter.com/home?status=http%3A//www.recipe123.uk/%23/display/'
+        }
+      ],
       headers: [{text: 'Ingredient', sortable: false},
         {text: 'Quantity', value: 'Quantity'},
         {text: 'Measurement', value: 'Measurement'},
@@ -78,7 +104,7 @@ export default {
   },
   methods: {
     loadingRecipe () {
-      sa.get('http://www.recipe123.uk/api/recipes/' + this.$route.params.id)
+      sa.get('http//localhost/api/recipes/' + this.$route.params.id)
         .set('Accept', 'application/json')
         .end((err, res) => {
           // Calling the end function will send the request
@@ -88,6 +114,14 @@ export default {
             this.recipe = JSON.parse(res.text).recipe
           }
         })
+    },
+    goToMethodPage () {
+      if (this.recipe.method !== ' ') {
+        this.$router.push('/' + this.recipe.method)
+      }
+    },
+    concatenate (URL, id) {
+      return URL + id
     }
   },
   mounted () {
@@ -97,11 +131,14 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  /*background-color: black;*/
+  background-repeat: no-repeat;
+  background-size: cover;
 }
   .width {
     width: 80%;
     margin-left: 10%;
   }
-
+  .height{
+    max-height: 18rem;
+  }
 </style>

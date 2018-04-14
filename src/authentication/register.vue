@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-form v-model="valid" class="form white--text">
+    <v-form v-model="valid" class="form white--text" >
+      <v-chip v-model = error  close class="red"> {{error_info}}</v-chip>
       <v-text-field
         label="E-mail"
         v-model=email
@@ -54,10 +55,12 @@
         valid: false,
         match: false,
         success: false,
+        error: false,
+        error_info: '',
         name: '',
         nameRules: [
           v => !!v || 'Name is required',
-          v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+          v => (v && v.length <= 20) || 'Name must be less than 20 characters'
         ],
         emailRules: [
           v => !!v || 'E-mail is required',
@@ -75,14 +78,15 @@
           email: this.email,
           password: this.password
         }
-        this.$http.post('http://www.recipe123.uk/api/register', data)
+        this.$http.post('/api/register', data)
           .then(() => {
               // Calling the end function will send the request
               alert('Register Success!')
               this.$router.push('/login')
             },
-            () => {
+            (error) => {
               this.error = true
+              this.error_info = error.status + ' ' + error.statusText
             }
           )
       }

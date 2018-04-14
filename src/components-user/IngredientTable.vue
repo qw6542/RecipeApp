@@ -83,7 +83,19 @@ export default {
         preparation: '',
         get_from: ''
       },
-      ingredients: [{}, {}, {}]
+      ingredients: [{name: '',
+        quantity: '',
+        measurement: '',
+        preparation: '',
+        get_from: ''}, {name: '',
+        quantity: '',
+        measurement: '',
+        preparation: '',
+        get_from: ''}, {name: '',
+        quantity: '',
+        measurement: '',
+        preparation: '',
+        get_from: ''}]
     }
   },
   components: {

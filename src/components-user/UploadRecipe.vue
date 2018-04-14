@@ -1,9 +1,26 @@
 <template>
-  <v-app  class="wrapper">
-  <v-form action="" v-model="valid" >
-    <h2>Add Your Own recipe:</h2>
-    <v-text-field label="Recipe Title" color="white" :dark=false  :rules="titleRules" required v-model="title" > </v-text-field>
-      <image-uploader  v-on:child-say="uploadImage"></image-uploader>
+    <v-app  class="wrapper black" >
+  <v-form v-on:submit="submit()" action="#" v-model="valid" method="post"  >
+    <h1>Add Your Own recipe:</h1>
+    <v-text-field label="Recipe Title" color="white" :dark=false  :rules="titleRules" required   v-model="newRecipe.title" > </v-text-field>
+    <h2>Cooking Method</h2>
+    <v-select
+      :items="dropdown_method"
+      label="Select"
+      editable
+      item-value="text"
+      v-model="newRecipe.method"
+    ></v-select>
+    <h2>Recipe Style</h2>
+    <v-select
+      :items="dropdown_style"
+      label="Select"
+      editable
+      item-value="text"
+      v-model="newRecipe.style"
+    ></v-select>
+
+    <image-uploader  v-on:child-say="uploadImage"></image-uploader>
     <br/>
     <IngredientTable v-on:child-say="inputIngredient" class="mx-2"></IngredientTable>
     <DescriptionTable v-on:child-say="inputDescription" class="mx-2"></DescriptionTable>
@@ -23,16 +40,35 @@ export default {
   name: 'upload-recipe',
   data: function () {
     return {
-      title: '',
       success: false,
       warning: false,
       valid: false,
       titleRules: [
         v => !!v || 'title is required'
       ],
+      dropdown_method: [
+        { text: 'Boiling' },
+        { text: 'Braising' },
+        { text: 'DeepFry' },
+        { text: 'RedStewing' },
+        { text: 'Roasting' },
+        { text: 'Steaming' },
+        { text: 'StirFry' }
+      ],
+      dropdown_style: [
+        {text: 'Cantonese'},
+        {text: 'Shandong'},
+        {text: 'Jiangsu'},
+        {text: 'Sichuan'},
+        {text: 'Fujian'},
+        {text: 'AnHui'},
+        {text: 'Hunan'}
+      ],
       newRecipe: {title: '',
         image: '',
         user_id: '',
+        method: '',
+        style: '',
         ingredients: [],
         descriptions: []
       }
@@ -49,17 +85,18 @@ export default {
       this.newRecipe.ingredients = data
     },
     submit  () {
-      if (this.newRecipe.ingredients.length === 0 || this.newRecipe.descriptions.length === 0 ||
+      if (this.newRecipe.ingredients[0] === undefined || this.newRecipe.descriptions[0] === undefined ||
         this.newRecipe.image === undefined) {
         this.warning = true
       } else {
         this.newRecipe.user_id = this.$auth.getAuthenticatedUser().id
         this.newRecipe.title = this.title
         this.$auth.setHeader()
-        this.$http.post('http://www.recipe123.uk/api/recipes/create', this.newRecipe)
+        this.$http.post('/api/recipes/create', this.newRecipe)
           .then(response => {
             this.success = true
-            this.newRecipe.splice(0, this.newReciepe.length)
+            //
+            // this.newRecipe = JSON.parse(JSON.stringify())
           }, (error) => {
             console.log(error)
           })

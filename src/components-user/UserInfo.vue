@@ -13,7 +13,7 @@
                 :counter="10"
                 required>
               </v-text-field>
-              <v-btn>Update</v-btn>
+              <v-btn @click="updateUser">Update</v-btn>
             </form>
           </v-flex>
         </v-layout>
@@ -35,12 +35,18 @@ export default {
   methods: {
     setAuthenticatedUser () {
       this.$auth.setHeader()
-      this.$http.get('http://www.recipe123.uk/api/user', this.$auth.getHeader())
+      this.$http.get('/api/user', this.$auth.getHeader())
         .then(response => {
           this.$auth.setAuthenticatedUser(response.body)
           this.user = response.body
+          console.log(this.user)
           this.$emit('child-say', this.user)
         }
+        )
+    },
+    updateUser () {
+      this.$http.post('/api/user/update', this.user)
+        .catch(error => console.log(error)
         )
     }
   },

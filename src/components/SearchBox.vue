@@ -1,22 +1,23 @@
 <template>
   <div>
     <form action="#" class="search-form">
-      <h1>Receipe</h1>
-      <input type="search" v-model="str_search" required/>
+      <h1>Recipe</h1>
+      <input type="search" v-model="str_search" required placeholder="Type in or select an ingredient tag to match the Chinese recipes"/>
       <button type="submit" @click="search">Go</button>
     </form>
     <v-layout row wrap>
       <v-flex xs10 offset-xs1 class="search-tag-container">
     <v-layout off-set row wrap justify-start align-center  v-for="(value, key) in  glossary" :key="key">
         <v-flex xs12 sm2 md2 lg2 >
-        <v-switch  :label=key color="green"  v-model=selected :value=key @change="toggle(key)"></v-switch>
+        <v-switch  :label=key color="white"  v-model=selected :value=key @change="toggle(key)"></v-switch>
         </v-flex>
       <v-flex xs0 sm0 md8 lg8>
-      <v-chip v-for="i in value" :key="i"  color="green" close @click="addFood(i, $event)" @input="deleteChip(value,i)">{{i}}</v-chip>
+      <v-chip v-for="i in value" :key="i"  color="white" close @click="addFood(i, $event)" @input="deleteChip(value,i)">{{i}}</v-chip>
       </v-flex>
     </v-layout>
       </v-flex>
     </v-layout>
+
   </div>
 </template>
 <script>
@@ -30,18 +31,18 @@ export default {
       result: '',
       selected: [],
       glossary: {
-        'Sauce': ['Soy Sauce', 'Hoisin sauce', 'Black vinegar', 'Oyster sauce', 'Bean curd'],
-        'Spice': [ 'Dried chili peppers', 'Sichuan peppercorn', 'Star anise' ],
-        'Vegetable': ['Spring Onion', 'Chives', 'Pakchoi', 'Cabbage'],
-        'Oil': ['Peanut Oil', 'Sesame Oil', 'Rap Oil']
+        'Ingredient': ['Soy Sauce', 'Hoisin sauce', 'Black vinegar', 'Oyster sauce', 'Bean curd',
+          'Dried chili peppers', 'Sichuan peppercorn', 'Star anise',
+          'Spring Onion', 'Chives', 'Pakchoi', 'Cabbage',
+          'Peanut Oil', 'Sesame Oil'],
+        'Method': ['Stir-fries', 'Deep-Frying', 'Steaming', 'Red Stewing', 'Boiling', 'Braising'],
+        'Style': [ 'Cantonese', 'Shandong', 'Jiangsu', 'Sichuan', 'Fujian', 'AnHui', 'Hunan' ]
       },
       glossary_backup: []
     }
   },
   methods: {
     addFood (food) {
-      // this.btn = event.currentTarget.innerHTML
-      //      alert(+btn.innerHTML)
       if (!this.isSelected(food)) {
         this.str_search += food + ' '
         this.selected.push(food)
@@ -50,7 +51,7 @@ export default {
       }
     },
     deleteChip (cate, item) {
-      cate.splice(item, 1)
+      cate.splice(cate.indexOf(item), 1)
     },
     isSelected (food) {
       return this.selected.includes(food)
@@ -64,9 +65,8 @@ export default {
     },
     search () {
       let data = {'search': this.str_search}
-      this.$http.post('http://www.recipe123.uk/api/recipes/search', data)
+      this.$http.post('/api/recipes/search', data)
         .then(response => {
-          console.log(response)
           this.result = response
           this.$emit('child-say', response)
         })

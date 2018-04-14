@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="bg-mask">
-    </div>
-    <nav-bar :key=this.$auth.isAuthenticated() > </nav-bar>
+    <!--<div class="bg-mask">-->
+    <!--</div>-->
+    <nav-bar :key=this.$auth.isAuthenticated() ></nav-bar>
   <v-container id="app">
     <router-view/>
   </v-container>
+    <div class="bot">
     <footer-bar></footer-bar>
-  </div>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -42,11 +44,14 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
   }
-  .bg-mask {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: -9999;
+  /*.bg-mask {*/
+    /*position: fixed;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*background: rgba(0, 0, 0, 0.3);*/
+    /*z-index: -9999;*/
+  /*}*/
+  .bot {
+    bottom: 0;
   }
 </style>

@@ -84,13 +84,13 @@ export default {
       }
     },
     Favorite () {
-      this.$http.get(this.prototype.$api + '/favorite', this.$auth.getHeader())
+      this.$http.get('api/favorite', this.$auth.getHeader())
         .then(response => {
           this.favorite_data = response.body
         })
     },
     Kitchen () {
-      this.$http.get(this.prototype.$api + '/kitchen/' + this.user.id)
+      this.$http.get('api/kitchen/' + this.user.id)
         .then(response => {
           this.kitchen_data = response.body
           console.log(response.body)

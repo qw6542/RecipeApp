@@ -1,13 +1,13 @@
 <template>
   <div >
     <nav class="nav-bar">
-
         <div class="right">
           <a href="/">
             <v-icon>home</v-icon>
             Home
           </a>
-        <a v-show="!islogin" href="#/login">Sign in</a>
+          <a href="#/chinese"><v-icon></v-icon>Chinese Style</a>
+          <a v-show="!islogin" href="#/login">Sign in</a>
         <a v-show="!islogin" href="#/register" >Sign up</a>
         <a v-show="islogin" href="#/profile" >Profile</a>
         <a v-if="islogin" href="" @click="logout">Log Out</a>

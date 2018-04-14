@@ -1,9 +1,9 @@
 <template>
   <v-container>
-  <v-form v-on:submit.prevent="onSubmit" class="white--text form">
-    <v-chip v-show="error" close class="black" @input="() => (error = !error ) ">
+  <v-form class="white--text form">
+    <v-chip v-model="error" close class="black" >
       <v-avatar class="red">Error</v-avatar>
-      Wrong Email Or Password ! </v-chip>
+      {{error_info}}! </v-chip>
     <v-text-field
       label="E-mail"
       v-model=email
@@ -32,7 +32,8 @@
   name: 'login-page',
   data () {
     return {
-      error: '',
+      error: false,
+      error_info: '',
       show: true,
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -46,28 +47,29 @@
     submit () {
         var data = {
           client_id: 2,
-          client_secret: 'YwxEhTlJ8wo292N4cYr0Ma9Zg7OW6kRmq1IbX0Fw',
+          client_secret: '3XGGedt8u69FqLYSIPypu6zl7OgGwALvmPg1tyk1',
           grant_type: 'password',
           username: this.email,
           password: this.password,
           scope: '*'
 
     }
-      this.$http.post('http://www.recipe123.uk/api/oauth/token', data)
+      this.$http.post('http://localhost/oauth/token', data)
         .then((response) => {
           // Calling the end function will send the request
             this.$auth.setToken(response.body.access_token, response.body.expires_in + Date.now())
             this.Authentication()
           this.$router.push('/profile')
         },
-          () => {
+          (error) => {
           this.error = true
+          this.error_info = error.status + ' ' + error.statusText
         }
         )
     },
     Authentication () {
       this.$auth.setHeader()
-      this.$http.get('http://www.recipe123.uk/api/user', this.$auth.getHeader())
+      this.$http.get('http://localhost/api/user', this.$auth.getHeader())
         .then(response => {
             this.$auth.setAuthenticatedUser(response.body)
           }

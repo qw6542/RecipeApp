@@ -13,8 +13,7 @@
       buttonClass="btn"
       class="pad"
       :customStrings="{
-        upload: '<h1>Bummer!</h1>',
-        drag: 'Drag a 😺 GIF or GTFO'
+        drag: 'Drag or click to upload photo here'
       }">
     </picture-input>
   </div>

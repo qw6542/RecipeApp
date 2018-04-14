@@ -1,23 +1,26 @@
 <template>
 <div>
 <search-box v-on:child-say="parse_search" ></search-box>
-
 <div>
   <v-layout row wrap>
     <v-flex  xs2  sm2 md2 lg2)></v-flex>
     <v-flex xs8  sm8 md8 lg8>
       <div  class="cardWrapper">
         <p> Sort By:</p>
-        <br/>
         <div>
-          <button v-on:click="clickHot">Hot</button>
-          <button v-on:click="clickNew" >New</button>
-          <button>Recent</button> <br/> <br/>
+          <v-btn v-on:click="clickHot" round class="red">Hot
+           <v-icon>fab fa-hotjar</v-icon>
+          </v-btn>
+          <v-btn v-on:click="clickNew" round class="green">New
+            <v-icon>autorenew</v-icon>
+          </v-btn>
+          <br/> <br/>
           <div>
             <recipe-card v-for="d in cardData" v-bind:card="d" :key="d.id" > </recipe-card>
           </div>
         </div>
-        <!--<v-paginator :options="options" :resource_url="resource_url2" ref="vpaginator" @update="updateResource"></v-paginator>-->
+        <v-pagination :length=pagination.last_page v-model=pagination.current_page @input="clickPage"
+        ></v-pagination>
       </div>
     </v-flex>
   </v-layout>
@@ -27,8 +30,6 @@
 
 <script>
 import RecipeCard from './components/RecipeCard.vue'
-// import VuePaginator from 'vuejs-paginator'
-import sa from 'superagent'
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import SearchBox from './components/SearchBox.vue'
@@ -40,42 +41,48 @@ export default {
   components: {
     SearchBox,
     RecipeCard
-  //    VPaginator: VuePaginator
   },
   data () {
     return {
-      cardData: []
+      Api: '/api/recipes/collections/hot',
+      cardData: {},
+      pagination: {}
     }
   },
   methods: {
     parse_search (search) {
-      this.cardData = search.body
-      console.log('here')
-      console.log(search.body)
+      this.cardData = search.body.data
+      this.makePagination(search.body)
+    },
+    makePagination (res) {
+      let pagination = {
+        current_page: res.current_page,
+        last_page: res.last_page,
+        next_page_url: res.next_page_url,
+        path: res.path,
+        prev_page_url: res.prev_page_url
+      }
+      this.pagination = pagination
+    },
+    fetchData (Api) {
+      this.$http.get(Api)
+        .then(res => {
+          this.$set(this, 'cardData', res.body.data)
+          this.makePagination(res.body)
+          console.log(this.cardData)
+        }
+        ).catch(err => console.log(err))
     },
     clickHot () {
-      sa.get('http://www.recipe123.uk/api/recipes/collections/hot')
-        .set('Accept', 'application/json')
-        .end((err, res) => {
-          // Calling the end function will send the request
-          if (err) {
-            alert(err)
-          } else {
-            this.cardData = JSON.parse(res.text).recipes
-          }
-        })
+      this.Api = 'http://localhost/api/recipes/collections/hot'
+      this.fetchData(this.Api)
     },
     clickNew () {
-      sa.get('http://www.recipe123.uk/api/recipes/collections/new')
-        .set('Accept', 'application/json')
-        .end((err, res) => {
-          // Calling the end function will send the request
-          if (err) {
-            alert(err)
-          } else {
-            this.cardData = JSON.parse(res.text).recipes
-          }
-        })
+      this.Api = '/api/recipes/collections/new'
+      this.fetchData(this.Api)
+    },
+    clickPage (page) {
+      this.fetchData(this.Api + '?page=' + page)
     }
   },
   mounted: function () {
